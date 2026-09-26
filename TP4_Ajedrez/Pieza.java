@@ -1,4 +1,4 @@
-public class Pieza {  // superclase
+public abstract class Pieza {  // superclase
 
     //atributtos
 
