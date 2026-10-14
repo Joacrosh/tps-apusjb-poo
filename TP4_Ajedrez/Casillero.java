@@ -1,8 +1,9 @@
 public class Casillero {
 
     // atributos
-    private String color;
+    private Color color;
     private String coordenadas;
+    private Pieza pieza; // null si el casillero está vacío
 
     //constructores
 
@@ -10,7 +11,7 @@ public class Casillero {
 
     }
 
-    public Casillero(String color, String coordenadas){
+    public Casillero(Color color, String coordenadas){
         this.color = color;
         this.coordenadas = coordenadas;
 
@@ -18,11 +19,11 @@ public class Casillero {
 
     // getters y setters
 
-    public String getColor(){
+    public Color getColor(){
         return color;
     }
 
-    public void setColor(String color){
+    public void setColor(Color color){
 
         this.color = color;
     }
@@ -37,5 +38,26 @@ public class Casillero {
         this.coordenadas = coordenadas;
     }
 
+    public Pieza getPieza(){
+        return pieza;
+    }
 
+    public void setPieza(Pieza pieza){
+        this.pieza = pieza;
+    }
+
+    // métodos
+
+    public boolean estaOcupado(){
+        return pieza != null;
+    }
+
+    // Lo que se ve del casillero en el tablero: la pieza si está ocupado,
+    // o su propio color si está vacío. Siempre mide 7 caracteres.
+    public String getContenido(){
+        if (estaOcupado()) {
+            return "[" + pieza.getAbreviatura() + "]";
+        }
+        return "[  " + color.getInicial() + "  ]";
+    }
 }
