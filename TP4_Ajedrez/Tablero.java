@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class Tablero {
 
     public static final int TAMANIO = 8;
@@ -57,7 +59,8 @@ public class Tablero {
         System.out.println();
     }
 
-    // Devuelve las piezas de un color que están en el tablero
+    // Devuelve solo las piezas de un color que están en el tablero
+    // (si falta alguna, el arreglo es más corto: nunca tiene posiciones en null)
     public Pieza[] getPiezas(Color color) {
 
         Pieza[] piezas = new Pieza[PIEZAS_POR_COLOR];
@@ -76,7 +79,8 @@ public class Tablero {
             }
         }
 
-        return piezas;
+        // Recorta el arreglo a la cantidad de piezas encontradas
+        return Arrays.copyOf(piezas, cantidad);
     }
 
     // Pone la fila de atrás (de A a H) y la fila de peones de un color

@@ -11,10 +11,16 @@ public class Casillero {
 
     }
 
+    // Casillero vacío (sin pieza)
     public Casillero(Color color, String coordenadas){
+        this(color, coordenadas, null);
+    }
+
+    // Constructor completo
+    public Casillero(Color color, String coordenadas, Pieza pieza){
         this.color = color;
         this.coordenadas = coordenadas;
-
+        this.pieza = pieza;
     }
 
     // getters y setters
