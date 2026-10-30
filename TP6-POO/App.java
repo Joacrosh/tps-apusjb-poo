@@ -5,14 +5,15 @@ import java.sql.SQLException;
  * TP6 - Persistencia de Ajedrez en BD
  *
  * 1. Crea el tablero con las 32 piezas en posicion inicial.
- * 2. Recorre el tablero e inserta cada pieza en la BD (INSERT con PreparedStatement).
+ * 2. Borra las piezas guardadas antes y recorre el tablero insertando cada pieza
+ *    en la BD (INSERT con PreparedStatement).
  * 3. Lee todas las piezas de la BD y las muestra por consola (SELECT con Statement).
  */
 public class App {
 
     public static void main(String[] args) {
 
-        // --- Paso 1: armar el tablero ---
+        // Paso 1: armar el tablero
         Tablero tablero = new Tablero();
         tablero.colocarPiezasIniciales();
 
@@ -20,11 +21,14 @@ public class App {
         tablero.mostrarTablero();
         System.out.println();
 
-        // --- Paso 2 y 3: conectar a la BD, insertar y listar ---
+        // Paso 2 y 3: conectar a la BD, insertar y listar 
         try (AccesoDatos acceso = new AccesoDatos()) {
 
             Connection conexion = acceso.getConexion();
             PiezaDAO dao = new PiezaDAO();
+
+            // Borrar las piezas guardadas antes, para no duplicarlas
+            dao.borrarPiezas(conexion);
 
             // Insertar las 32 piezas recorriendo el tablero
             int insertadas = 0;

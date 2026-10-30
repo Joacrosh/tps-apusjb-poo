@@ -10,9 +10,24 @@ import java.sql.Statement;
  */
 public class PiezaDAO {
 
-    // ---------------------------------------------------------------
+    
     // Punto 3 del TP: método de inserción
-    // ---------------------------------------------------------------
+   
+
+    /**
+     * Borra todas las piezas de la tabla 'pieza'.
+     * Se llama antes de insertar, asi al ejecutar el programa otra vez
+     * no se duplican las piezas (la BD no permite dos piezas en la misma
+     * posicion).
+     *
+     * @param conexion  la conexion abierta a la BD
+     */
+    public void borrarPiezas(Connection conexion) throws SQLException {
+
+        try (Statement st = conexion.createStatement()) {
+            st.executeUpdate("DELETE FROM pieza");
+        }
+    }
 
     /**
      * Inserta una pieza en la tabla 'pieza' usando PreparedStatement.
@@ -26,8 +41,8 @@ public class PiezaDAO {
 
         String sql = "INSERT INTO pieza "
                 + "(Descripcion, idColor, idTipoPieza, Posicion, "
-                + " Movimiento, Comportamiento, Velocidad) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+                + " Movimiento, Comportamiento, Velocidad, Fecha_Creacion) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, CURDATE())";  // fecha de hoy
 
         try (PreparedStatement ps = conexion.prepareStatement(sql)) {
 
@@ -43,10 +58,8 @@ public class PiezaDAO {
         }
     }
 
-    // ---------------------------------------------------------------
     // Punto 4 del TP: método de listado
-    // ---------------------------------------------------------------
-
+    
     /**
      * Lee todas las piezas de la tabla 'pieza' (con JOIN a color y tipopieza)
      * y las muestra por consola.
@@ -59,7 +72,7 @@ public class PiezaDAO {
                 + "       c.Descripcion AS Color, "
                 + "       t.Descripciondepieza AS Tipo, "
                 + "       p.Posicion, p.Movimiento, "
-                + "       p.Comportamiento, p.Velocidad "
+                + "       p.Comportamiento, p.Velocidad, p.Fecha_Creacion "
                 + "FROM pieza p "
                 + "JOIN color c      ON p.idColor     = c.idColor "
                 + "JOIN tipopieza t  ON p.idTipoPieza = t.idTipoPieza "
@@ -80,6 +93,7 @@ public class PiezaDAO {
                 String movimiento   = rs.getString("Movimiento");
                 String comportamiento = rs.getString("Comportamiento");
                 String velocidad    = rs.getString("Velocidad");
+                String fecha        = rs.getString("Fecha_Creacion");
 
                 System.out.println("Pieza #" + id + ": " + descripcion);
                 System.out.println("  Color: " + color
@@ -88,6 +102,7 @@ public class PiezaDAO {
                 System.out.println("  Movimiento: " + movimiento
                         + " | Comportamiento: " + comportamiento
                         + " | Velocidad: " + velocidad);
+                System.out.println("  Fecha de creacion: " + fecha);
                 System.out.println();
             }
         }
